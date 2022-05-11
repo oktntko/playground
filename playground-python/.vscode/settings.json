@@ -1,0 +1,44 @@
+{
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "python.languageServer": "Pylance",
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintEnabled": false,
+  "editor.tabSize": 4,
+  "better-comments.tags": [
+    {
+      "tag": "#", // 見出し
+      "color": "#f92672",
+      "bold": true
+    },
+    {
+      "tag": "~", // 打消し線
+      "strikethrough": true
+    },
+    {
+      "tag": ":", // 太字
+      "bold": true
+    },
+    {
+      "tag": "!", // red is-danger
+      "color": "#ff3860"
+    },
+    {
+      "tag": "?", // blue is-info
+      "color": "#209cee"
+    },
+    {
+      "tag": "@", // yellow is-warning
+      "color": "#ffdd57"
+    },
+    {
+      "tag": "+", // green is-success
+      "color": "#23d160"
+    }
+  ]
+}
