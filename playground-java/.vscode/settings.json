@@ -1,0 +1,49 @@
+{
+  "[java]": {
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "better-comments.tags": [
+    {
+      "tag": "#", // 見出し
+      "color": "#f92672",
+      "bold": true
+    },
+    {
+      "tag": "~", // 打消し線
+      "strikethrough": true
+    },
+    {
+      "tag": ":", // 太字
+      "bold": true
+    },
+    {
+      "tag": "!", // red is-danger
+      "color": "#ff3860"
+    },
+    {
+      "tag": "?", // blue is-info
+      "color": "#209cee"
+    },
+    {
+      "tag": "@", // yellow is-warning
+      "color": "#ffdd57"
+    },
+    {
+      "tag": "+", // green is-success
+      "color": "#23d160"
+    }
+  ],
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m",
+  "java.format.settings.profile": "GoogleStyle",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.debug.settings.console": "integratedTerminal",
+  "java.checkstyle.configuration": "/google_checks.xml"
+}

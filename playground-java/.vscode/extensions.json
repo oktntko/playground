@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "vscjava.vscode-java-pack",
+    "shengchen.vscode-checkstyle",
+    "vscjava.vscode-gradle",
+    "mathiasfrohlich.Kotlin"
+  ]
+}
