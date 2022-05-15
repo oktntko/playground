@@ -1,12 +1,28 @@
-# PLAYGROUND
+# Go
 
-いろんな言語の実行環境
+## 環境構築
 
-## 前提条件
+[環境構築](../README.md#環境構築)
 
-- WSL2, Ubuntu
-- brew, asdf
-- VSCode, Remote - WSL
+### つづき
+
+```sh
+# asdf のプラグインを追加する
+asdf plugin-add golang
+# 実行環境をインストールする
+asdf install
+```
+
+```sh
+go version
+```
+
+## プログラムの実行
+
+```sh
+# go run cmd/playground/[filename].py
+go run cmd/playground/greet.go
+```
 
 ## やること
 

@@ -1,12 +1,38 @@
-# PLAYGROUND
+# Nodejs
 
-いろんな言語の実行環境
+## 環境構築
 
-## 前提条件
+[環境構築](../README.md#環境構築)
 
-- WSL2, Ubuntu
-- brew, asdf
-- VSCode, Remote - WSL
+### つづき
+
+```sh
+# asdf のプラグインを追加する
+asdf plugin-add nodejs
+# 実行環境をインストールする
+asdf install
+```
+
+```sh
+# npm を最新化する
+npm i -g npm@latest
+```
+
+```sh
+node -v
+npm -v
+```
+
+```sh
+npm i # このディレクトリの依存パッケージをインストールする
+```
+
+## プログラムの実行
+
+```sh
+# npm run ts src/[filename].ts
+npm run ts src/greeter.ts
+```
 
 ## やること
 

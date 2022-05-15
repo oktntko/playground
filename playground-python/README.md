@@ -1,12 +1,52 @@
-# PLAYGROUND
+# Python
 
-いろんな言語の実行環境
+## 環境構築
 
-## 前提条件
+[環境構築](../README.md#環境構築)
 
-- WSL2, Ubuntu
-- brew, asdf
-- VSCode, Remote - WSL
+### つづき
+
+```sh
+# asdf のプラグインを追加する
+asdf plugin-add python
+# 実行環境をインストールする
+asdf install # pythonは時間がかかる
+```
+
+```sh
+# pip を最新化する
+pip install --upgrade pip
+# pipenv をインストールする
+pip install pipenv && \
+   asdf reshim python
+```
+
+```sh
+python --version
+pip --version
+pipenv --version
+```
+
+```sh
+echo "export PIPENV_VENV_IN_PROJECT=true # python pipenv" >> ~/.bashrc
+. ~/.bashrc
+```
+
+```sh
+# このディレクトリの依存パッケージをインストールする
+pipenv install --dev
+```
+
+## プログラムの実行
+
+```sh
+# pipenv run python src/[filename].py
+pipenv run python src/greet.py
+# もしくは
+pipenv shell # でpipenv環境に入って
+python src/greet.py # で実行
+# Ctrl + D で抜ける
+```
 
 ## やること
 

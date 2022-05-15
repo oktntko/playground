@@ -112,7 +112,11 @@ sudo apt install -y docker-compose
 docker --version
 # Docker Compose version
 docker-compose --version
+# Manage Docker as a non-root user
+sudo usermod -aG docker $USER
 ```
+
+> **INFO**: 終わったらログインし直す
 
 ```sh
 sudo service docker start   # 開始

@@ -1,15 +1,14 @@
 # MySQL
 
-## 実行環境
+## 環境構築
 
-- Windows, WSL2
-- Docker
+[環境構築](../README.md#環境構築)
 
 ## 準備
 
-```
-docker-compose up -d
+```sh
 cp .env.example .env
+docker-compose up -d
 ```
 
 ## クライアントツール

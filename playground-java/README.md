@@ -1,12 +1,35 @@
-# PLAYGROUND
+# Java
 
-いろんな言語の実行環境
+## 環境構築
 
-## 前提条件
+[環境構築](../README.md#環境構築)
 
-- WSL2, Ubuntu
-- brew, asdf
-- VSCode, Remote - WSL
+### つづき
+
+```sh
+# asdf のプラグインを追加する
+asdf plugin-add java
+# 実行環境をインストールする
+asdf install
+```
+
+```sh
+echo ". ~/.asdf/plugins/java/set-java-home.bash # java" >> ~/.bashrc
+. ~/.bashrc
+```
+
+```sh
+java --version
+```
+
+## プログラムの実行
+
+プログラムは VSCode の拡張機能で実行する
+
+> **WARNING**: 挙動が不安定。VSCode の起動が鍵。原因不明
+
+- 左下 > JAVA PROJECTS > Clean Workspace
+- Ctrl + Shift + P > Reload Window
 
 ## やること
 
