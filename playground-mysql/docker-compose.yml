@@ -1,0 +1,19 @@
+version: "3"
+services:
+  database:
+    container_name: playground_database
+    image: mysql:8.0.28
+    ports:
+      - ${PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Tokyo
+    restart: on-failure
+    volumes:
+      - ./.docker/database/data:/var/lib/mysql
+      - ./.docker/database/logs:/var/log/mysql
+      - ./.docker/database/initdb.d:/docker-entrypoint-initdb.d
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default_authentication_plugin=mysql_native_password

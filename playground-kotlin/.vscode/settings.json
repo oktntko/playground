@@ -10,7 +10,7 @@
   "files.trimFinalNewlines": true,
   "better-comments.tags": [
     {
-      "tag": "#", // white 見出し
+      "tag": "#", // 見出し
       "color": "#f92672",
       "bold": true
     },
