@@ -15,7 +15,8 @@
 - [ ] Java
 - [ ] Go
 - [ ] shell script(zsh)
-- [ ] Kotlin
+- ~Kotlin~
+  - 素直に IntelliJ IDEA を使う方がよい
 - [ ] Swift
 - [ ] C++
 - [ ] C
