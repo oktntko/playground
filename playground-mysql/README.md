@@ -29,12 +29,12 @@ cp .env.example .env
 
 ## やること
 
-- [ ] CREATE TABLE
-- [ ] INSERT
-- [ ] UPDATE
-- [ ] DELETE
-- [ ] SELECT
-- [ ] ALTER TABLE, FOREIGN KEY
-- [ ] JOIN
-- [ ] あとから読む
+- [x] CREATE TABLE
+- [x] INSERT
+- [x] UPDATE
+- [x] DELETE
+- [x] SELECT
+- [x] ALTER TABLE, FOREIGN KEY
+- [x] JOIN
+- [x] あとから読む
   - https://dev.mysql.com/doc/refman/8.0/ja/tutorial.html
