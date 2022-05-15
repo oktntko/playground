@@ -14,7 +14,7 @@
 - [ ] Python
 - [ ] Java
 - [ ] Go
-- [ ] shell script(zsh)
+- [ ] shell script(bash)
 - ~Kotlin~
   - 素直に IntelliJ IDEA を使う方がよい
 - [ ] Swift
