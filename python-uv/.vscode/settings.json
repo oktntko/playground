@@ -1,0 +1,37 @@
+{
+  "files.exclude": {
+    "**/.nox": true,
+    "**/.venv": true
+  },
+  "files.watcherExclude": {
+    "**/.nox": true,
+    "**/.venv": true
+  },
+  "search.exclude": {
+    "**/.nox": true,
+    "**/.venv": true
+  },
+  "ruff.lint.enable": true,
+  "ruff.configuration": "ruff.toml",
+  "ruff.importStrategy": "fromEnvironment",
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "editor.rulers": [100],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "python.defaultInterpreterPath": ".venv/bin/python",
+}

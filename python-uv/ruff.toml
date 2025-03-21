@@ -1,0 +1,29 @@
+fix = true
+indent-width = 2
+line-length = 100
+respect-gitignore = true
+show-fixes = true
+
+[lint]
+select = [
+  "E",   # pycodestyle
+  "F",   # Pyflakes
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "SIM", # flake8-simplify
+  "I",   # isort
+]
+ignore = []
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true
+docstring-code-line-length = 100
+
+[lint.pycodestyle]
+max-line-length = 100
+
+[lint.pydocstyle]
+convention = "google"
