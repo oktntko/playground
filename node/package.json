@@ -9,7 +9,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.6.5",
   "scripts": {
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "tsx": "tsx --tsconfig tsconfig.node.json"
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
@@ -22,5 +23,13 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.27.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

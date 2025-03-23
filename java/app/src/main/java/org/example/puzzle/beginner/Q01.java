@@ -1,4 +1,4 @@
-package org.example.beginner;
+package org.example.puzzle.beginner;
 
 import java.util.Objects;
 

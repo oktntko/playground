@@ -23,6 +23,12 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "noPropertyAccessFromIndexSignature": false,
+
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
+    "paths": {
+      "~/*": ["src/*"]
+    } /* Specify a set of entries that re-map imports to additional lookup locations. */
   }
 }

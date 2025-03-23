@@ -5,7 +5,7 @@
 from datetime import datetime
 from itertools import count
 
-begin = datetime.now().microsecond
+begin = datetime.now().microsecond / 1000
 
 for i in count(start=10):
   b02 = format(i, "b")
@@ -17,5 +17,5 @@ for i in count(start=10):
     print(f"a01. = {i}, {x16}")
     break
 
-finish = datetime.now().microsecond
+finish = datetime.now().microsecond / 1000
 print(f"{finish - begin}ms")
