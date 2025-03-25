@@ -1,0 +1,6 @@
+[tools]
+php = "8.4.5"
+
+[env]
+PHP_CS_FIXER_IGNORE_ENV = true
+PHPRC = "php.ini"

@@ -1,0 +1,21 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  "php-cs-fixer.executablePath": "${workspaceFolder}/vendor/bin/php-cs-fixer",
+  "php-cs-fixer.config": ".php-cs-fixer.php;.php-cs-fixer.dist.php;.php_cs;.php_cs.dist",
+  "php-cs-fixer.ignorePHPVersion": true,
+  "[php]": {
+    "editor.defaultFormatter": "junstyle.php-cs-fixer"
+  },
+  "[json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

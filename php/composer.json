@@ -1,0 +1,11 @@
+{
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.73"
+  },
+  "scripts": {
+    "fix": "php-cs-fixer fix src",
+    "check": "php-cs-fixer fix --dry-run src",
+    "check:diff": "php-cs-fixer fix --dry-run --diff src",
+    "run": "php src/main.php"
+  }
+}
