@@ -1,0 +1,25 @@
+{
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  //
+  "[go]": {
+    "editor.tabSize": 2,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.rulers": [100],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "golang.go"
+  }
+}
