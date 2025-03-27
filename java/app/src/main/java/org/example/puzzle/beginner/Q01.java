@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Q01 {
   public static void main(String[] args) {
-    var begin = System.currentTimeMillis();
+    final var begin = System.currentTimeMillis();
 
     for (int i = 10;; i++) {
-      var b02 = Integer.toString(i, 2);
-      var o08 = Integer.toString(i, 8);
-      var d10 = Integer.toString(i, 10);
-      var x16 = Integer.toString(i, 16);
+      final var b02 = Integer.toString(i, 2);
+      final var o08 = Integer.toString(i, 8);
+      final var d10 = Integer.toString(i, 10);
+      final var x16 = Integer.toString(i, 16);
 
       if (Objects.equals(b02, new StringBuilder(b02).reverse().toString())
           && Objects.equals(o08, new StringBuilder(o08).reverse().toString())
@@ -20,7 +20,7 @@ public class Q01 {
       }
     }
 
-    var finish = System.currentTimeMillis();
+    final var finish = System.currentTimeMillis();
     System.out.println((finish - begin) + "ms");
   }
 }
