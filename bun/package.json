@@ -16,6 +16,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "remeda": "^2.21.2"
   }
 }

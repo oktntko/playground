@@ -25,7 +25,8 @@
     "typescript-eslint": "^8.27.0"
   },
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "remeda": "2.21.2"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
