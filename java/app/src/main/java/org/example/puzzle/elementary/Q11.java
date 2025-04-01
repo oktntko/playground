@@ -23,7 +23,7 @@ public class Q11 {
       }
     }
 
-    System.out.println(n);
+    n.forEach(System.out::println);
 
     final var finish = System.currentTimeMillis();
     System.out.println((finish - begin) + "ms");
