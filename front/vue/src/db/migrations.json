@@ -1,0 +1,13 @@
+[
+  {
+    "sql": [
+      "CREATE SCHEMA \"todolist\";\n",
+      "\nCREATE TABLE \"todolist\".\"category\" (\n\t\"category_id\" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,\n\t\"category_name\" varchar(100) DEFAULT '' NOT NULL,\n\t\"order\" integer,\n\t\"created_at\" timestamp DEFAULT now() NOT NULL,\n\t\"updated_at\" timestamp DEFAULT now() NOT NULL\n);\n",
+      "\nCREATE TABLE \"todolist\".\"todo\" (\n\t\"todo_id\" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,\n\t\"category_id\" uuid,\n\t\"title\" varchar(100) DEFAULT '' NOT NULL,\n\t\"limit\" date,\n\t\"order\" integer,\n\t\"done_at\" timestamp,\n\t\"created_at\" timestamp DEFAULT now() NOT NULL,\n\t\"updated_at\" timestamp DEFAULT now() NOT NULL\n);\n",
+      "\nALTER TABLE \"todolist\".\"todo\" ADD CONSTRAINT \"todo_category_id_category_category_id_fk\" FOREIGN KEY (\"category_id\") REFERENCES \"todolist\".\"category\"(\"category_id\") ON DELETE set null ON UPDATE no action;"
+    ],
+    "bps": true,
+    "folderMillis": 1744199489849,
+    "hash": "9e6aec93a1dd8e192c4db986bccc290b61543a41fe68762cf928bc293e465b52"
+  }
+]
