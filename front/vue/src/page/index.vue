@@ -11,5 +11,12 @@ useTitle('vue');
     >
       ToDo リスト
     </RouterLink>
+    <RouterLink
+      :to="{
+        name: '/numpad/',
+      }"
+    >
+      電卓
+    </RouterLink>
   </div>
 </template>
