@@ -6,5 +6,3 @@
   <a href={routes.home}>Home</a>
   <a href={routes.numpad}>numpad</a>
 </nav>
-
-<slot />
