@@ -1,12 +1,11 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import type { ButtonHTMLAttributes } from 'vue';
-import type { JSX } from 'vue/jsx-runtime';
 import { Decimal } from '~/lib/decimal.js';
 
 const modelvalue = ref('');
 const refInput = useTemplateRef<HTMLInputElement>('refInput');
 
-function input({ target, char }: { target: EventTarget | null; char: string }) {
+async function input({ target, char }: { target: EventTarget | null; char: string }) {
   if (!refInput.value) {
     return;
   }
@@ -21,18 +20,16 @@ function input({ target, char }: { target: EventTarget | null; char: string }) {
 
   const currentValue = modelvalue.value;
   const newValue = currentValue.slice(0, start) + char + currentValue.slice(end);
-
   modelvalue.value = newValue;
 
-  nextTick(() => {
-    refInput.value?.setSelectionRange(start + char.length, start + char.length);
-    if (target instanceof HTMLElement) {
-      target.focus();
-    }
-  });
+  await nextTick();
+  refInput.value.setSelectionRange(start + char.length, start + char.length);
+  if (target instanceof HTMLElement) {
+    target.focus();
+  }
 }
 
-function backspace({ target }: { target: EventTarget | null }) {
+async function backspace({ target }: { target: EventTarget | null }) {
   if (!refInput.value) {
     return;
   }
@@ -55,16 +52,15 @@ function backspace({ target }: { target: EventTarget | null }) {
 
   modelvalue.value = newValue;
 
-  nextTick(() => {
-    const focusIndex = start === end ? (start === 0 ? 0 : start - 1) : start;
-    refInput.value?.setSelectionRange(focusIndex, focusIndex);
-    if (target instanceof HTMLElement) {
-      target.focus();
-    }
-  });
+  await nextTick();
+  const focusIndex = start === end ? (start === 0 ? 0 : start - 1) : start;
+  refInput.value.setSelectionRange(focusIndex, focusIndex);
+  if (target instanceof HTMLElement) {
+    target.focus();
+  }
 }
 
-function del({ target }: { target: EventTarget | null }) {
+async function del({ target }: { target: EventTarget | null }) {
   if (!refInput.value) {
     return;
   }
@@ -87,14 +83,13 @@ function del({ target }: { target: EventTarget | null }) {
 
   modelvalue.value = newValue;
 
-  nextTick(() => {
-    const focusIndex =
-      start === end ? (start === currentValue.length ? currentValue.length : start) : start;
-    refInput.value?.setSelectionRange(focusIndex, focusIndex);
-    if (target instanceof HTMLElement) {
-      target.focus();
-    }
-  });
+  await nextTick();
+  const focusIndex =
+    start === end ? (start === currentValue.length ? currentValue.length : start) : start;
+  refInput.value.setSelectionRange(focusIndex, focusIndex);
+  if (target instanceof HTMLElement) {
+    target.focus();
+  }
 }
 
 function clear({ target }: { target: EventTarget | null }) {
@@ -421,38 +416,7 @@ function calculate(expression: string) {
 
 const historyList = ref<{ expression: string; result: number }[]>([]);
 
-const HighlightedText = ref<JSX.Element>(<div></div>);
-watch(modelvalue, (newValue) => {
-  const validNewValue = (newValue.match(/([\d\s+\-*/().])/g) ?? []).join('');
-  modelvalue.value = validNewValue;
-
-  HighlightedText.value = (
-    <div>
-      {validNewValue.split('').map((token, i) => {
-        return (
-          <span
-            key={i}
-            class={
-              token.match(/[\d.]/)
-                ? 'text-gray-800'
-                : ['+', '-', '*', '/'].includes(token)
-                  ? 'text-purple-600'
-                  : token === '(' || token === ')'
-                    ? 'text-yellow-400'
-                    : 'text-red-400'
-            }
-          >
-            {token}
-          </span>
-        );
-      })}
-    </div>
-  );
-
-  calculate(validNewValue);
-});
-
-function handleSubmit() {
+async function handleSubmit() {
   const result = calculate(modelvalue.value);
   if (result == null) {
     return;
@@ -469,16 +433,15 @@ function handleSubmit() {
   });
   modelvalue.value = newValue;
 
-  nextTick(() => {
-    refInput.value?.setSelectionRange(newValue.length, newValue.length);
-    if (activeElement instanceof HTMLElement) {
-      activeElement.focus();
-    }
-    const container = document.getElementById('history-list');
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  });
+  await nextTick();
+  refInput.value?.setSelectionRange(newValue.length, newValue.length);
+  if (activeElement instanceof HTMLElement) {
+    activeElement.focus();
+  }
+  const container = document.getElementById('history-list');
+  if (container) {
+    container.scrollTop = container.scrollHeight;
+  }
 }
 </script>
 
@@ -556,7 +519,23 @@ function handleSubmit() {
               'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
             ]"
           >
-            <HighlightedText></HighlightedText>
+            <div>
+              <span
+                v-for="(token, i) of modelvalue.split('')"
+                :key="i"
+                :class="
+                  token.match(/[\d.]/)
+                    ? 'text-gray-800'
+                    : ['+', '-', '*', '/'].includes(token)
+                      ? 'text-purple-600'
+                      : token === '(' || token === ')'
+                        ? 'text-yellow-400'
+                        : 'text-red-400'
+                "
+              >
+                {{ token }}
+              </span>
+            </div>
           </div>
           <input
             ref="refInput"
@@ -572,6 +551,13 @@ function handleSubmit() {
               'rounded border-[0.5px] border-black p-2.5 text-right font-mono text-lg',
               'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
             ]"
+            @input="
+              () => {
+                const validNewValue = (modelvalue.match(/([\d\s+\-*/().])/g) ?? []).join('');
+                modelvalue = validNewValue;
+                calculate(validNewValue);
+              }
+            "
             @keydown="
               (e) => {
                 switch (e.key) {
