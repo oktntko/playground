@@ -5,91 +5,90 @@ import { Decimal } from '~/lib/decimal.js';
 const modelvalue = ref('');
 const refInput = useTemplateRef<HTMLInputElement>('refInput');
 
-async function input({ target, char }: { target: EventTarget | null; char: string }) {
-  if (!refInput.value) {
+async function setNewValueAndSetSelectionToRefInput(
+  fn: (current: { start: number; end: number; value: string }) => {
+    newValue: string;
+    newSelection: number;
+  },
+  target: EventTarget | null,
+) {
+  const input = refInput.value;
+  if (!input) {
     return;
   }
 
-  const start = refInput.value.selectionStart;
-  const end = refInput.value.selectionEnd;
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
   if (start == null || end == null) {
     return;
   }
 
-  refInput.value.focus();
-
-  const currentValue = modelvalue.value;
-  const newValue = currentValue.slice(0, start) + char + currentValue.slice(end);
+  input.focus();
+  const value = modelvalue.value;
+  const { newValue, newSelection } = fn({ start, end, value });
   modelvalue.value = newValue;
 
   await nextTick();
-  refInput.value.setSelectionRange(start + char.length, start + char.length);
+  input.setSelectionRange(newSelection, newSelection);
   if (target instanceof HTMLElement) {
     target.focus();
   }
+}
+
+async function input({ target, char }: { target: EventTarget | null; char: string }) {
+  return setNewValueAndSetSelectionToRefInput(
+    (current) => ({
+      newValue: current.value.slice(0, current.start) + char + current.value.slice(current.end),
+      newSelection: current.start + char.length,
+    }),
+    target,
+  );
 }
 
 async function backspace({ target }: { target: EventTarget | null }) {
-  if (!refInput.value) {
-    return;
-  }
-
-  const start = refInput.value.selectionStart;
-  const end = refInput.value.selectionEnd;
-  if (start == null || end == null) {
-    return;
-  }
-
-  refInput.value.focus();
-
-  const currentValue = modelvalue.value;
-  const newValue =
-    start === end
-      ? start === 0
-        ? currentValue
-        : currentValue.slice(0, start - 1) + currentValue.slice(start)
-      : currentValue.slice(0, start) + currentValue.slice(end);
-
-  modelvalue.value = newValue;
-
-  await nextTick();
-  const focusIndex = start === end ? (start === 0 ? 0 : start - 1) : start;
-  refInput.value.setSelectionRange(focusIndex, focusIndex);
-  if (target instanceof HTMLElement) {
-    target.focus();
-  }
+  return setNewValueAndSetSelectionToRefInput((current) => {
+    if (current.start === current.end) {
+      if (current.start === 0) {
+        return {
+          newValue: current.value,
+          newSelection: 0,
+        };
+      } else {
+        return {
+          newValue: current.value.slice(0, current.start - 1) + current.value.slice(current.start),
+          newSelection: current.start - 1,
+        };
+      }
+    } else {
+      return {
+        newValue: current.value.slice(0, current.start) + current.value.slice(current.end),
+        newSelection: current.start,
+      };
+    }
+  }, target);
 }
 
 async function del({ target }: { target: EventTarget | null }) {
-  if (!refInput.value) {
-    return;
-  }
-
-  const start = refInput.value.selectionStart;
-  const end = refInput.value.selectionEnd;
-  if (start == null || end == null) {
-    return;
-  }
-
-  refInput.value.focus();
-
-  const currentValue = modelvalue.value;
-  const newValue =
-    start === end
-      ? start === currentValue.length
-        ? currentValue
-        : currentValue.slice(0, start) + currentValue.slice(start + 1)
-      : currentValue.slice(0, start) + currentValue.slice(end);
-
-  modelvalue.value = newValue;
-
-  await nextTick();
-  const focusIndex =
-    start === end ? (start === currentValue.length ? currentValue.length : start) : start;
-  refInput.value.setSelectionRange(focusIndex, focusIndex);
-  if (target instanceof HTMLElement) {
-    target.focus();
-  }
+  return setNewValueAndSetSelectionToRefInput((current) => {
+    if (current.start === current.end) {
+      if (current.start === current.value.length) {
+        return {
+          newValue: current.value,
+          newSelection: current.value.length,
+        };
+      } else {
+        return {
+          newValue: current.value.slice(0, current.start) + current.value.slice(current.start + 1),
+          newSelection: current.start,
+        };
+      }
+    } else {
+      return {
+        newValue: current.value.slice(0, current.start) + current.value.slice(current.end),
+        newSelection: current.start,
+      };
+    }
+  }, target);
 }
 
 function clear({ target }: { target: EventTarget | null }) {
