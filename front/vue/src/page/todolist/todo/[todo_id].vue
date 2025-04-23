@@ -71,7 +71,7 @@ async function handleDelete() {
               exact-active-class="text-gray-900"
               class="inline-flex items-center text-sm text-gray-400 transition-colors hover:text-blue-600"
             >
-              <span class="icon-[logos--vue] h-3 w-3"> </span>
+              <span class="icon-[logos--vue] h-4 w-4"> </span>
               <span class="ms-1 capitalize">vue</span>
             </RouterLink>
           </li>
@@ -85,7 +85,7 @@ async function handleDelete() {
               exact-active-class="text-gray-900"
               class="inline-flex items-center text-sm text-gray-400 transition-colors hover:text-blue-600"
             >
-              <span class="icon-[icons8--todo-list] h-3 w-3"> </span>
+              <span class="icon-[icons8--todo-list] h-4 w-4"> </span>
               <span class="ms-1 capitalize">todolist</span>
             </RouterLink>
           </li>
