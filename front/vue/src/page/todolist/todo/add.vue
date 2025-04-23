@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useTitle('vue | ToDo リスト');
+useTitle('vue | ToDo List');
 
 import { useLoading } from '~/plugin/LoadingPlugin';
 import { useToast } from '~/plugin/ToastPlugin';

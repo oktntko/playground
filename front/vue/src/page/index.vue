@@ -9,14 +9,14 @@ useTitle('vue');
         name: '/todolist/todo/',
       }"
     >
-      ToDo リスト
+      ToDo List
     </RouterLink>
     <RouterLink
       :to="{
         name: '/numpad/',
       }"
     >
-      電卓
+      Numpad
     </RouterLink>
   </div>
 </template>

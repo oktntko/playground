@@ -1,4 +1,6 @@
 <script setup lang="ts">
+useTitle('vue | Numpad');
+
 import type { ButtonHTMLAttributes } from 'vue';
 import { Decimal } from '~/lib/decimal.js';
 
@@ -520,142 +522,56 @@ useEventListener(document, 'keydown', (e) => {
 </script>
 
 <template>
-  <div class="my-8 text-center">
-    <form class="inline-flex flex-col gap-4" @submit.prevent="handleSubmit">
-      <!-- 履歴 -->
-      <div
-        id="history-list"
-        :class="[
-          'h-20 snap-y snap-mandatory overflow-y-scroll scroll-smooth',
-          'text-right font-mono',
-        ]"
-      >
-        <button
-          v-for="(history, i) of historyList"
-          :key="i"
-          ref="refHistory"
-          type="button"
+  <div class="p-4">
+    <div class="">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center gap-2">
+          <li class="inline-flex items-center">
+            <RouterLink
+              :to="{ name: '/' }"
+              exact-active-class="text-gray-900"
+              class="inline-flex items-center text-sm text-gray-400 transition-colors hover:text-blue-600"
+            >
+              <span class="icon-[logos--vue] h-3 w-3"> </span>
+              <span class="ms-1 capitalize">vue</span>
+            </RouterLink>
+          </li>
+
+          <li class="inline-flex items-center">
+            <span class="icon-[weui--arrow-filled]"></span>
+          </li>
+          <li class="inline-flex items-center">
+            <RouterLink
+              :to="{ name: '/numpad/' }"
+              exact-active-class="text-gray-900"
+              class="inline-flex items-center text-sm text-gray-400 transition-colors hover:text-blue-600"
+            >
+              <span class="icon-[arcticons--remotenumpad] h-3 w-3"> </span>
+              <span class="ms-1 capitalize">numpad</span>
+            </RouterLink>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="my-8 text-center">
+      <form class="inline-flex flex-col gap-4" @submit.prevent="handleSubmit">
+        <!-- 履歴 -->
+        <div
+          id="history-list"
           :class="[
-            'flex h-20 w-full snap-center snap-always flex-col items-end justify-center px-2',
-            'transition-shadow ring-inset focus:ring-2 focus:ring-blue-400 focus:outline-none',
-            'hover:bg-blue-50 focus:bg-blue-50',
+            'h-20 snap-y snap-mandatory overflow-y-scroll scroll-smooth',
+            'text-right font-mono',
           ]"
-          @keydown="
-            (e) => {
-              switch (e.key) {
-                case 'ArrowUp':
-                  e.preventDefault();
-                  if (i > 0) {
-                    refHistory?.[i - 1].focus();
-                  }
-                  break;
-                case 'ArrowDown':
-                  e.preventDefault();
-                  if (i < historyList.length - 1) {
-                    return refHistory?.[i + 1].focus();
-                  } else {
-                    return refInput?.focus();
-                  }
-              }
-            }
-          "
-          @click="
-            async () => {
-              await $navigator.clipboard.writeText(`${history.result}`);
-              $toast.info('copied to clipboard');
-            }
-          "
         >
-          <div class="text-lg">{{ history.expression }}</div>
-          <div class="text-base">{{ history.result }}</div>
-        </button>
-      </div>
-
-      <!-- 入力部 -->
-      <div>
-        <div class="relative h-12 w-full">
-          <div
-            :class="[
-              'absolute top-0 left-0 h-full w-full',
-              'z-0 whitespace-pre-wrap text-transparent',
-              'rounded border-[0.5px] border-black p-2.5 text-right font-mono text-lg',
-              'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
-            ]"
-          >
-            <div>
-              <span
-                v-for="(token, i) of modelvalue.split('')"
-                :key="i"
-                :class="
-                  token.match(/[\d.]/)
-                    ? 'text-gray-800'
-                    : ['+', '-', '*', '/'].includes(token)
-                      ? 'text-purple-600'
-                      : token === '(' || token === ')'
-                        ? 'text-yellow-400'
-                        : 'text-red-400'
-                "
-              >
-                {{ token }}
-              </span>
-            </div>
-          </div>
-          <input
-            ref="refInput"
-            v-model="modelvalue"
-            type="text"
-            required
-            pattern="^[\d\s\+\-\*\/\(\)\.]+"
-            maxlength="32"
-            :class="[
-              'absolute top-0 left-0 h-full w-full',
-              'z-10 bg-transparent text-black/25' /* opacity だとすべて透明、 transparent・rgba(/0) だとカーソルも透明になるんので、カーソルがギリギリ見えて裏の文字色が有効に見える濃さにしている */,
-              'rounded border-[0.5px] border-black p-2.5 text-right font-mono text-lg',
-              'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
-            ]"
-            @input="
-              () => {
-                const validNewValue = (modelvalue.match(/([\d\s+\-*/().])/g) ?? []).join('');
-                modelvalue = validNewValue;
-                calculate(validNewValue);
-              }
-            "
-            @keydown="
-              (e) => {
-                switch (e.key) {
-                  case 'ArrowUp':
-                    e.preventDefault();
-                    if (historyList.length > 0) {
-                      refHistory?.[historyList.length - 1].focus();
-                    }
-                    break;
-                  case 'ArrowDown':
-                    e.preventDefault();
-                    return refNumpad?.[0]?.focus();
-                }
-              }
-            "
-          />
-        </div>
-        <div class="h-8 text-right font-mono">
-          <!-- 計算結果 -->
-          {{ calculateResult }}
-        </div>
-      </div>
-
-      <!-- テンキー -->
-      <div class="flex justify-center">
-        <div class="grid grid-cols-4 grid-rows-6 gap-0.5">
           <button
-            v-for="(button, i) of numpad"
-            :id="button.id"
+            v-for="(history, i) of historyList"
             :key="i"
-            ref="refNumpad"
-            :type="button.type ?? 'button'"
+            ref="refHistory"
+            type="button"
             :class="[
-              button.additionalClass,
-              'relative inline-flex flex-col items-center justify-center rounded border-[0.5px] border-black p-4 text-lg capitalize',
-              'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
+              'flex h-20 w-full snap-center snap-always flex-col items-end justify-center px-2',
+              'transition-shadow ring-inset focus:ring-2 focus:ring-blue-400 focus:outline-none',
               'hover:bg-blue-50 focus:bg-blue-50',
             ]"
             @keydown="
@@ -663,38 +579,157 @@ useEventListener(document, 'keydown', (e) => {
                 switch (e.key) {
                   case 'ArrowUp':
                     e.preventDefault();
-                    return moveFocus({
-                      currentPosition: button.positions[0],
-                      move: { row: -1 },
-                    });
-                  case 'ArrowLeft':
-                    e.preventDefault();
-                    return moveFocus({
-                      currentPosition: button.positions[0],
-                      move: { col: -1 },
-                    });
-                  case 'ArrowRight':
-                    e.preventDefault();
-                    return moveFocus({
-                      currentPosition: button.positions[button.positions.length - 1],
-                      move: { col: 1 },
-                    });
+                    if (i > 0) {
+                      refHistory?.[i - 1].focus();
+                    }
+                    break;
                   case 'ArrowDown':
                     e.preventDefault();
-                    return moveFocus({
-                      currentPosition: button.positions[button.positions.length - 1],
-                      move: { row: 1 },
-                    });
+                    if (i < historyList.length - 1) {
+                      return refHistory?.[i + 1].focus();
+                    } else {
+                      return refInput?.focus();
+                    }
                 }
               }
             "
-            @click="button.onClick"
+            @click="
+              async () => {
+                await $navigator.clipboard.writeText(`${history.result}`);
+                $toast.info('copied to clipboard');
+              }
+            "
           >
-            {{ button.label }}
+            <div class="text-lg">{{ history.expression }}</div>
+            <div class="text-base">{{ history.result }}</div>
           </button>
         </div>
-      </div>
-    </form>
+
+        <!-- 入力部 -->
+        <div>
+          <div class="relative h-12 w-full">
+            <div
+              :class="[
+                'absolute top-0 left-0 h-full w-full',
+                'z-0 whitespace-pre-wrap text-transparent',
+                'rounded border-[0.5px] border-black p-2.5 text-right font-mono text-lg',
+                'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
+              ]"
+            >
+              <div>
+                <span
+                  v-for="(token, i) of modelvalue.split('')"
+                  :key="i"
+                  :class="
+                    token.match(/[\d.]/)
+                      ? 'text-gray-800'
+                      : ['+', '-', '*', '/'].includes(token)
+                        ? 'text-purple-600'
+                        : token === '(' || token === ')'
+                          ? 'text-yellow-400'
+                          : 'text-red-400'
+                  "
+                >
+                  {{ token }}
+                </span>
+              </div>
+            </div>
+            <input
+              ref="refInput"
+              v-model="modelvalue"
+              type="text"
+              required
+              pattern="^[\d\s\+\-\*\/\(\)\.]+"
+              maxlength="32"
+              :class="[
+                'absolute top-0 left-0 h-full w-full',
+                'z-10 bg-transparent text-black/25' /* opacity だとすべて透明、 transparent・rgba(/0) だとカーソルも透明になるんので、カーソルがギリギリ見えて裏の文字色が有効に見える濃さにしている */,
+                'rounded border-[0.5px] border-black p-2.5 text-right font-mono text-lg',
+                'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
+              ]"
+              @input="
+                () => {
+                  const validNewValue = (modelvalue.match(/([\d\s+\-*/().])/g) ?? []).join('');
+                  modelvalue = validNewValue;
+                  calculate(validNewValue);
+                }
+              "
+              @keydown="
+                (e) => {
+                  switch (e.key) {
+                    case 'ArrowUp':
+                      e.preventDefault();
+                      if (historyList.length > 0) {
+                        refHistory?.[historyList.length - 1].focus();
+                      }
+                      break;
+                    case 'ArrowDown':
+                      e.preventDefault();
+                      return refNumpad?.[0]?.focus();
+                  }
+                }
+              "
+            />
+          </div>
+          <div class="h-8 text-right font-mono">
+            <!-- 計算結果 -->
+            {{ calculateResult }}
+          </div>
+        </div>
+
+        <!-- テンキー -->
+        <div class="flex justify-center">
+          <div class="grid grid-cols-4 grid-rows-6 gap-0.5">
+            <button
+              v-for="(button, i) of numpad"
+              :id="button.id"
+              :key="i"
+              ref="refNumpad"
+              :type="button.type ?? 'button'"
+              :class="[
+                button.additionalClass,
+                'relative inline-flex flex-col items-center justify-center rounded border-[0.5px] border-black p-4 text-lg capitalize',
+                'transition-shadow ring-inset focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none',
+                'hover:bg-blue-50 focus:bg-blue-50',
+              ]"
+              @keydown="
+                (e) => {
+                  switch (e.key) {
+                    case 'ArrowUp':
+                      e.preventDefault();
+                      return moveFocus({
+                        currentPosition: button.positions[0],
+                        move: { row: -1 },
+                      });
+                    case 'ArrowLeft':
+                      e.preventDefault();
+                      return moveFocus({
+                        currentPosition: button.positions[0],
+                        move: { col: -1 },
+                      });
+                    case 'ArrowRight':
+                      e.preventDefault();
+                      return moveFocus({
+                        currentPosition: button.positions[button.positions.length - 1],
+                        move: { col: 1 },
+                      });
+                    case 'ArrowDown':
+                      e.preventDefault();
+                      return moveFocus({
+                        currentPosition: button.positions[button.positions.length - 1],
+                        move: { row: 1 },
+                      });
+                  }
+                }
+              "
+              @click="button.onClick"
+            >
+              {{ button.label }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
