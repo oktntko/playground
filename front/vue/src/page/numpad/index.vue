@@ -269,7 +269,7 @@ const numpad = computed(
 );
 
 const refHistory = useTemplateRef<HTMLButtonElement[]>('refHistory');
-const refNampad = useTemplateRef<HTMLButtonElement[]>('refNampad');
+const refNumpad = useTemplateRef<HTMLButtonElement[]>('refNumpad');
 
 function moveFocus({
   currentPosition,
@@ -301,7 +301,7 @@ function moveFocus({
   );
 
   if (~index) {
-    refNampad.value?.[index]?.focus();
+    refNumpad.value?.[index]?.focus();
   }
 }
 
@@ -442,22 +442,86 @@ async function handleSubmit() {
     container.scrollTop = container.scrollHeight;
   }
 }
+function isTypingElement(el: Element | null): boolean {
+  return (
+    !!el &&
+    (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || (el as HTMLElement).isContentEditable)
+  );
+}
+
+function isKeyHandleKey(key: string): key is (typeof NUMPAD)[number] {
+  const CLEAR = 'Clear';
+  const DEL = 'Delete';
+  const BACKSPACE = 'Backspace';
+  const NUM = [
+    '/',
+    '*',
+    '-',
+    '+',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '.',
+    '(',
+    ')',
+  ] as const;
+  const EQUAL = '=';
+  const NUMPAD = [CLEAR, DEL, BACKSPACE, ...NUM, EQUAL] as const;
+
+  return (NUMPAD as readonly string[]).includes(key);
+}
+
+useEventListener(document, 'keydown', (e) => {
+  if (isTypingElement(document.activeElement)) {
+    return;
+  }
+
+  if (!isKeyHandleKey(e.key)) {
+    return;
+  }
+
+  e.preventDefault();
+  switch (e.key) {
+    case 'Clear':
+      return clear({ target: e.target });
+    case 'Delete':
+      return del({ target: e.target });
+    case 'Backspace':
+      return backspace({ target: e.target });
+    case '/':
+    case '*':
+    case '-':
+    case '+':
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '.':
+    case '(':
+    case ')':
+      return input({ target: e.target, char: e.key });
+    case '=':
+      return equal();
+  }
+});
 </script>
 
 <template>
   <div class="my-8 text-center">
-    <form
-      class="inline-flex flex-col gap-4"
-      @keydown="
-        (e) => {
-          switch (e.key) {
-            case '=':
-              return equal();
-          }
-        }
-      "
-      @submit.prevent="handleSubmit"
-    >
+    <form class="inline-flex flex-col gap-4" @submit.prevent="handleSubmit">
       <!-- 履歴 -->
       <div
         id="history-list"
@@ -540,7 +604,6 @@ async function handleSubmit() {
             ref="refInput"
             v-model="modelvalue"
             type="text"
-            autofocus
             required
             pattern="^[\d\s\+\-\*\/\(\)\.]+"
             maxlength="32"
@@ -568,62 +631,26 @@ async function handleSubmit() {
                     break;
                   case 'ArrowDown':
                     e.preventDefault();
-                    return refNampad?.[0]?.focus();
+                    return refNumpad?.[0]?.focus();
                 }
               }
             "
           />
         </div>
-        <div class="h-8 text-right">
+        <div class="h-8 text-right font-mono">
           <!-- 計算結果 -->
           {{ calculateResult }}
         </div>
       </div>
 
       <!-- テンキー -->
-      <div
-        class="flex justify-center"
-        @keydown="
-          (e) => {
-            switch (e.key) {
-              case 'Clear':
-                e.preventDefault();
-                return clear({ target: e.target });
-              case 'Delete':
-                e.preventDefault();
-                return del({ target: e.target });
-              case 'Backspace':
-                e.preventDefault();
-                return backspace({ target: e.target });
-              case '/':
-              case '*':
-              case '-':
-              case '+':
-              case '0':
-              case '1':
-              case '2':
-              case '3':
-              case '4':
-              case '5':
-              case '6':
-              case '7':
-              case '8':
-              case '9':
-              case '.':
-              case '(':
-              case ')':
-                e.preventDefault();
-                return input({ target: e.target, char: e.key });
-            }
-          }
-        "
-      >
+      <div class="flex justify-center">
         <div class="grid grid-cols-4 grid-rows-6 gap-0.5">
           <button
             v-for="(button, i) of numpad"
             :id="button.id"
             :key="i"
-            ref="refNampad"
+            ref="refNumpad"
             :type="button.type ?? 'button'"
             :class="[
               button.additionalClass,
@@ -642,7 +669,6 @@ async function handleSubmit() {
                     });
                   case 'ArrowLeft':
                     e.preventDefault();
-
                     return moveFocus({
                       currentPosition: button.positions[0],
                       move: { col: -1 },
