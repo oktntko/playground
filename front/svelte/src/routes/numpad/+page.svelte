@@ -1,10 +1,12 @@
 <script lang="ts">
   import { Decimal } from '$lib/decimal.js';
-  import { R } from '$lib/remeda';
   import { routes } from '$lib/routes';
   import { tick } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { page } from '$app/state';
+  import { useToast } from '$lib/toast';
+
+  const toast = useToast();
 
   let modelvalue = $state('');
   let refInput: HTMLInputElement;
@@ -597,9 +599,8 @@
               }
             }}
             onclick={async () => {
-              // TODO
-              // await $navigator.clipboard.writeText(`${history.result}`);
-              // $toast.info('copied to clipboard');
+              await navigator.clipboard.writeText(`${history.result}`);
+              toast.info('copied to clipboard');
             }}
           >
             <div class="text-lg">{history.expression}</div>
